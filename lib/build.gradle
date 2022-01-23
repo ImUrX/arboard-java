@@ -41,7 +41,7 @@ tasks.register("copyJNITest", Copy) {
     into layout.buildDirectory.dir("resources/main/natives/")
     include "*.so"
     include "*.dll"
-    include "*.dynlib"
+    include "*.dylib"
 }
 
 tasks.register("copyJNI", Copy) {
@@ -56,7 +56,7 @@ tasks.register("copyJNI", Copy) {
     from("../native/target/x86_64-pc-windows-gnu/release")
     include "*.so"
     include "*.dll"
-    include "*.dynlib"
+    include "*.dylib"
     into layout.buildDirectory.dir("resources/main/natives/")
     
 }
