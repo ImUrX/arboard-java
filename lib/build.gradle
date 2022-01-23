@@ -49,6 +49,7 @@ tasks.register("copyJNI", Copy) {
         tasks.findAll { task -> task.name.startsWith("compileJNI") }
     })
     enabled = !gradle.startParameter.getTaskNames().contains("test")
+    duplicatesStrategy "include"
     from("../native/target/release")
     from("../native/target/x86_64-unknown-linux-gnu/release")
     from("../native/target/x86_64-apple-darwin/release")
