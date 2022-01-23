@@ -58,8 +58,11 @@ jobs:
       uses: Swatinem/rust-cache@v1.3.0
       with:
         working-directory: "./native/"
-    - name: Install cross
-      run: cargo install cross
+    - name: rust-cargo
+      uses: actions-rs/cargo@v1.0.1
+      with:
+        command: check
+        use-cross: true
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
