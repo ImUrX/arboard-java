@@ -31,17 +31,19 @@ dependencies {
 }
 
 tasks.named("processResources") {
-    with copySpec {
-        compileJNI
-        from("../native/target/debug") {
-            include "*.so";
-            include "*.d"
-        }
-        into "natives"
-    }
+    dependsOn tasks.copyJNI
 }
 
-tasks.register("compileJNI", Exec) {
+tasks.register("copyJNI", Copy) {
+    dependsOn tasks.compileJNI
+    from("../native/target/debug")
+    into layout.buildDirectory.dir("resources/main/natives/")
+    include "*.so";
+    include "*.d"
+    
+}
+
+tasks.register("compileJNI", Exec) {    
     workingDir "../native"
     commandLine "cargo", "build"
 }
