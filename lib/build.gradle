@@ -31,19 +31,55 @@ dependencies {
 }
 
 tasks.named("processResources") {
-    dependsOn tasks.copyJNI
+    dependsOn(["copyJNI", "copyJNITest"])
+}
+
+tasks.register("copyJNITest", Copy) {
+    dependsOn "compileJNITest"
+    enabled = gradle.startParameter.getTaskNames().contains("test")
+    from("../native/target/debug")
+    into layout.buildDirectory.dir("resources/main/natives/")
+    include "*.so"
+    include "*.dll"
+    include "*.dynlib"
 }
 
 tasks.register("copyJNI", Copy) {
-    dependsOn tasks.compileJNI
-    from("../native/target/debug")
+    dependsOn(provider {
+        tasks.findAll { task -> task.name.startsWith("compileJNI") }
+    })
+    enabled = !gradle.startParameter.getTaskNames().contains("test")
+    from("../native/target/release")
+    from("../native/target/x86_64-unknown-linux-gnu/release")
+    from("../native/target/x86_64-apple-darwin/release")
+    from("../native/target/x86_64-pc-windows-gnu/release")
+    include "*.so"
+    include "*.dll"
+    include "*.dynlib"
     into layout.buildDirectory.dir("resources/main/natives/")
-    include "*.so";
-    include "*.d"
     
 }
 
-tasks.register("compileJNI", Exec) {    
+tasks.register("compileJNITest", Exec) {
+    enabled = gradle.startParameter.getTaskNames().contains("test")
     workingDir "../native"
     commandLine "cargo", "build"
+}
+
+tasks.register("compileJNILinux", Exec) {
+    enabled = !gradle.startParameter.getTaskNames().contains("test")
+    workingDir "../native"
+    commandLine "cross", "build", "--release", "--target", "x86_64-unknown-linux-gnu"
+}
+
+tasks.register("compileJNIDarwin", Exec) {
+    enabled = !gradle.startParameter.getTaskNames().contains("test")
+    workingDir "../native"
+    commandLine "cross", "build", "--release", "--target", "x86_64-apple-darwin"
+}
+
+tasks.register("compileJNIWin", Exec) {
+    enabled = !gradle.startParameter.getTaskNames().contains("test")
+    workingDir "../native"
+    commandLine "cross", "build", "--release", "--target", "x86_64-pc-windows-gnu"
 }
