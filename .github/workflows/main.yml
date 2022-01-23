@@ -66,7 +66,7 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
       with:
-        arguments: jar
+        arguments: jar --info
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.3.1
       with:
