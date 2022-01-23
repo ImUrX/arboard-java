@@ -25,4 +25,23 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:30.1.1-jre'
+
+    // https://mvnrepository.com/artifact/com.github.ramanrajarathinam/native-utils
+    implementation group: 'com.github.ramanrajarathinam', name: 'native-utils', version: '1.0.0'
+}
+
+tasks.named("processResources") {
+    with copySpec {
+        compileJNI
+        from("../native/target/debug") {
+            include "*.so";
+            include "*.d"
+        }
+        into "natives"
+    }
+}
+
+tasks.register("compileJNI", Exec) {
+    workingDir "../native"
+    commandLine "cargo", "build"
 }

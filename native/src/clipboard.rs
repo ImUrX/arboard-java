@@ -13,6 +13,7 @@ pub extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardNew(
     Box::into_raw(Box::new(clipboard)) as jlong
 }
 
+#[no_mangle]
 pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardGetText(
     env: JNIEnv,
     _class: JClass,
@@ -24,6 +25,7 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardGe
         .into_inner()
 }
 
+#[no_mangle]
 pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardSetText(
     env: JNIEnv,
     _class: JClass,
@@ -38,6 +40,7 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardSe
     clipboard.set_text(input).unwrap()
 }
 
+#[no_mangle]
 pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardGetImage(
     _env: JNIEnv,
     _class: JClass,
@@ -48,6 +51,7 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardGe
     Box::into_raw(Box::new(image)) as jlong
 }
 
+#[no_mangle]
 pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardSetImage(
     _env: JNIEnv,
     _class: JClass,
@@ -59,6 +63,7 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardSe
     clipboard.set_image(image.clone()).unwrap();
 }
 
+#[no_mangle]
 pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardDrop(
     _env: JNIEnv,
     _class: JClass,

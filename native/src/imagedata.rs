@@ -22,6 +22,16 @@ pub extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataNew(
 }
 
 #[no_mangle]
+pub unsafe extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataGetBytes(
+    env: JNIEnv,
+    _class: JClass,
+    image_ptr: jlong,
+) -> jbyteArray {
+    let image = &mut *(image_ptr as *mut ImageData);
+    env.byte_array_from_slice(&image.bytes).expect("Couldn't make ByteArray")
+}
+
+#[no_mangle]
 pub unsafe extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataDrop(
     _env: JNIEnv,
     _class: JClass,
