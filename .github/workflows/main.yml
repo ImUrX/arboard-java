@@ -40,10 +40,10 @@ jobs:
       uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
     - name: Run gradle test with XVFB
       if: matrix.os == 'ubuntu-latest'
-      run: xvfb-run --auto-servernum gradle test
+      run: xvfb-run --auto-servernum gradle test --info
     - name: Run gradle test
       if: matrix.os != 'ubuntu-latest'
-      run: gradle test
+      run: gradle test --info
     - run: |
         cd native
         cargo build --release
