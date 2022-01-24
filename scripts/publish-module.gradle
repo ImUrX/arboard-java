@@ -6,9 +6,14 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.java.srcDirs
 }
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
 
 artifacts {
     archives sourcesJar
+    archives javadocJar
 }
 
 group = PUBLISH_GROUP_ID
@@ -26,6 +31,7 @@ afterEvaluate {
                 version PUBLISH_VERSION
                 from components.java
                 artifact sourcesJar
+                artifact javadocJar
 
                 pom {
                     name = PUBLISH_ARTIFACT_ID

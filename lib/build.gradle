@@ -30,6 +30,11 @@ dependencies {
     implementation group: 'com.github.ramanrajarathinam', name: 'native-utils', version: '1.0.0'
 }
 
+javadoc {
+    source = sourceSets.main.allJava
+    options.addBooleanOption('html5', true)
+}
+
 ext {
     PUBLISH_GROUP_ID = 'io.github.imurx'
     PUBLISH_VERSION = '1.0.0'
