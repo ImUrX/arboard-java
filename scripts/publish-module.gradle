@@ -1,0 +1,69 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.java.srcDirs
+}
+
+
+artifacts {
+    archives sourcesJar
+}
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+group = "io.github.imurx.arboard"
+version = "1.0.0"
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId PUBLISH_GROUP_ID
+                artifactId PUBLISH_ARTIFACT_ID
+                version PUBLISH_VERSION
+                from components.java
+                artifact sourcesJar
+
+                pom {
+                    name = PUBLISH_ARTIFACT_ID
+                    description = 'Arboard bindings for Java'
+                    url = 'https://github.com/ImUrX/arboard-java'
+                    licenses {
+                        license {
+                            name = 'Apache License Version 2.0'
+                            url = 'https://github.com/ImUrX/arboard-java/blob/main/LICENSE-APACHE'
+                        }
+                        license {
+                            name = 'MIT License'
+                            url = 'https://github.com/ImUrX/arboard-java/blob/main/LICENSE-MIT'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'ImUrX'
+                            name = 'Uriel Fontan'
+                            email = 'urielfontan2002@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:github.com/ImUrX/arboard-java.git'
+                        developerConnection = 'scm:git:ssh://github.com/ImUrX/arboard-java.git'
+                        url = 'https://github.com/ImUrX/arboard-java/tree/main'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            rootProject.ext["signing.keyId"],
+            rootProject.ext["signing.key"],
+            rootProject.ext["signing.password"],
+    )
+    sign publishing.publications
+}

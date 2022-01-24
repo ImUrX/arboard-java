@@ -7,3 +7,5 @@ build
 .vscode
 .idea
 lib/bin
+local.properties
+lib/src/main/resources/natives/
