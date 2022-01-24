@@ -80,7 +80,7 @@ jobs:
     - run: |
         cd ./lib/build/resources/main/natives
         ls ./
-        find . -type f -mindepth 1 -exec mv -i -n -- {} . \;
+        find . -type f -mindepth 2 -maxdepth 3 -exec mv -i -n -- {} . \;
         find . -depth -mindepth 1 -type d -exec rmdir {} \;
         ls ./
         cd ../../../../../
