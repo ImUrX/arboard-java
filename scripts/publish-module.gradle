@@ -19,9 +19,6 @@ artifacts {
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
 
-group = "io.github.imurx.arboard"
-version = "1.0.0"
-
 afterEvaluate {
     publishing {
         publications {
