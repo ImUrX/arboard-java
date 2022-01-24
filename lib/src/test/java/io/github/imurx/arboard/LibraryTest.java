@@ -8,7 +8,6 @@ public class LibraryTest {
     public void setText() {
         try (Clipboard clip = new Clipboard()) {
             clip.setText("input");
-            Thread.sleep(5000);
             assertEquals("Clipboard text isnt equal", "input", clip.getText());
         } catch (Exception e) {
             e.printStackTrace();

@@ -31,7 +31,7 @@ dependencies {
 }
 
 tasks.named("processResources") {
-    dependsOn(["copyJNI", "copyJNITest"])
+    dependsOn "copyJNITest"
 }
 
 tasks.register("copyJNITest", Copy) {
@@ -42,23 +42,6 @@ tasks.register("copyJNITest", Copy) {
     include "*.so"
     include "*.dll"
     include "*.dylib"
-}
-
-tasks.register("copyJNI", Copy) {
-    dependsOn(provider {
-        tasks.findAll { task -> task.name.startsWith("compileJNI") }
-    })
-    enabled = !gradle.startParameter.getTaskNames().contains("test")
-    duplicatesStrategy "include"
-    from("../native/target/release")
-    from("../native/target/x86_64-unknown-linux-gnu/release")
-    from("../native/target/x86_64-apple-darwin/release")
-    from("../native/target/x86_64-pc-windows-gnu/release")
-    include "*.so"
-    include "*.dll"
-    include "*.dylib"
-    into layout.buildDirectory.dir("resources/main/natives/")
-    
 }
 
 tasks.register("compileJNITest", Exec) {
