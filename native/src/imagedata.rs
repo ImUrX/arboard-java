@@ -18,7 +18,7 @@ pub extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataNew(
         height: height as usize,
         bytes: Cow::from(image.as_slice()),
     };
-    Box::into_raw(Box::new(image_data)) as jlong
+    Box::into_raw(Box::new(image_data.to_owned_img())) as jlong
 }
 
 #[no_mangle]

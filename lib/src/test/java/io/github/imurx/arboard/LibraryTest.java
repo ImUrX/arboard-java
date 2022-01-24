@@ -14,18 +14,18 @@ public class LibraryTest {
         }
     }
 
-    private static final byte[] image = {127,127,127,127,
-        127,127,127,127,
+    private static final byte[] image = {
+        -1,-1,-1,-1,
+        0,0,0,-1,
     };
     @Test
     public void setImage() {
         try (Clipboard clip = new Clipboard()) {
             ImageData data = new ImageData(2, 1, image);
             clip.setImage(data);
-            Thread.sleep(5000);
+            data.close();
             ImageData data2 = clip.getImage();
             assertArrayEquals(image, data2.getImage());
-            data.close();
             data2.close();
         } catch (Exception e) {
             e.printStackTrace();
