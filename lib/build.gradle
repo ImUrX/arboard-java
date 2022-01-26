@@ -20,12 +20,6 @@ dependencies {
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13.2'
 
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'org.apache.commons:commons-math3:3.6.1'
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:30.1.1-jre'
-
     // https://mvnrepository.com/artifact/com.github.ramanrajarathinam/native-utils
     implementation group: 'com.github.ramanrajarathinam', name: 'native-utils', version: '1.0.0'
 }
@@ -37,7 +31,7 @@ javadoc {
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.imurx'
-    PUBLISH_VERSION = '1.0.1'
+    PUBLISH_VERSION = '1.0.2'
     PUBLISH_ARTIFACT_ID = 'arboard'
 }
 
