@@ -21,38 +21,57 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [aarch64, x86_64]
+        include:
+          - os: ubuntu-latest
+            triple: unknown-linux-gnu
+          - os: windows-latest
+            triple: pc-windows-msvc
+          - os: macos-latest
+            triple: apple-darwin
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.0
     - name: rust-toolchain
       uses: actions-rs/toolchain@v1.0.6
       with:
         toolchain: stable
+        target: "${{ matrix.arch }}-${{ matrix.triple }}"
+        override: true
     - name: Rust Cache
       uses: Swatinem/rust-cache@v1.3.0
       with:
         working-directory: "./native/"
     - name: Set up JDK 11
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3.1.0
       with:
         java-version: '11'
         distribution: 'temurin'
     - name: Test with Gradle
-      uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
+      uses: gradle/gradle-build-action@v2.1.5
     - name: Run gradle test with XVFB
       if: matrix.os == 'ubuntu-latest'
       run: xvfb-run --auto-servernum gradle test --info
     - name: Run gradle test
       if: matrix.os != 'ubuntu-latest'
       run: gradle test --info
-    - run: |
-        cd native
-        cargo build --release
-        cd ..
-    - name: Upload library
-      uses: actions/upload-artifact@v2.3.1
+    - name: Build lib
+      uses: actions-rs/cargo@v1.0.1
       with:
-        name: ${{ matrix.os }}
-        path: ./native/target/release/*.*
+        # Cargo command to run (ex. `check` or `build`)
+        command: build
+        args: --target "${{ matrix.arch }}-${{ matrix.triple }}" --release --manifest-path=native/Cargo.toml
+        use-cross: true
+    - name: Rename to arch type
+      shell: bash #prepare for bashing syntaxing
+      run: |
+        cd native/target/release
+        for i in ./arboard_java.* ; do mv "$i" "${{ matrix.arch }}_$i" ; done
+        cd ../../../
+    - name: Upload library
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: "${{ matrix.arch }}-${{ matrix.triple }}"
+        path: "./native/target/release/${{ matrix.arch }}*"
 
   jar:
     
@@ -60,7 +79,7 @@ jobs:
     needs: build
     environment: OSSRH_USERNAME
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.0
     - name: rust-toolchain
       uses: actions-rs/toolchain@v1.0.6
       with:
@@ -71,12 +90,12 @@ jobs:
         working-directory: "./native/"
     - run: cargo install cross
     - name: Set up JDK 11
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3.1.0
       with:
         java-version: '11'
         distribution: 'temurin'
     - name: Download all build artifacts
-      uses: actions/download-artifact@v2.1.0
+      uses: actions/download-artifact@v3.0.0
       with:
         path: ./lib/src/main/resources/natives/
     - run: |
@@ -87,12 +106,12 @@ jobs:
         ls ./
         cd ../../../../../
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
+      uses: gradle/gradle-build-action@v2.1.5
       with:
         arguments: jar --info
     - run: gradle sourceJar
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.3.1
+      uses: actions/upload-artifact@v3.0.0
       with:
         path: ./lib/build/libs/
     - name: Publish to MavenCentral Provision
