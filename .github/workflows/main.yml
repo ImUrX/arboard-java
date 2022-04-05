@@ -62,18 +62,10 @@ jobs:
         args: --target "${{ matrix.arch }}-${{ matrix.triple }}" --release --manifest-path=native/Cargo.toml
         use-cross: true
     - name: Rename to arch type
-      if: matrix.os != 'macos-latest'
       shell: bash #prepare for bashing syntaxing
       run: |
         cd native/target/release
-        for i in arboard_java.* ; do mv "$i" "${{ matrix.arch }}_$i" ; done
-        cd ../../../
-    - name: Rename to arch type in MacOS
-      if: matrix.os == 'macos-latest'
-      shell: zsh {0}
-      run: |
-        cd native/target/release
-        for i in arboard_java.* ; do mv "$i" "${{ matrix.arch }}_$i" ; done
+        for i in *arboard_java.* ; do mv "$i" "${{ matrix.arch }}_$i" ; done
         cd ../../../
     - name: Upload library
       uses: actions/upload-artifact@v3.0.0
