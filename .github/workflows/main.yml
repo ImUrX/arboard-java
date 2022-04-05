@@ -65,7 +65,7 @@ jobs:
       shell: bash #prepare for bashing syntaxing
       run: |
         cd native/target/release
-        for i in ./arboard_java.* ; do mv "$i" "${{ matrix.arch }}_$i" ; done
+        for i in arboard_java.* ; do mv "$i" "${{ matrix.arch }}_$i" ; done
         cd ../../../
     - name: Upload library
       uses: actions/upload-artifact@v3.0.0
