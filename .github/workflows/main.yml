@@ -64,7 +64,7 @@ jobs:
     - name: Rename to arch type
       shell: bash #prepare for bashing syntaxing
       run: |
-        cd native/target/release
+        cd native/target/release/build
         ls
         for f in *arboard_java.*; do mv "$f" "${{ matrix.arch }}_$f"; done
         cd ../../../
