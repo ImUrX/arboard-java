@@ -25,7 +25,7 @@ public class Clipboard implements AutoCloseable {
         ARCHS.put("x86_64", "x86_64");
 
         try {
-            NativeUtils.loadLibraryFromJar("/natives/" + ARCHS.get(System.getProperty("os.arch").toLowerCase()) + System.mapLibraryName("arboard_java"));
+            NativeUtils.loadLibraryFromJar("/natives/" + ARCHS.get(System.getProperty("os.arch").toLowerCase()) + "_" + System.mapLibraryName("arboard_java"));
         } catch (IOException e1) {
             e1.printStackTrace();
             try {
