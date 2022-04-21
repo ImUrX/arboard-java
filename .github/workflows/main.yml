@@ -39,7 +39,7 @@ jobs:
         deb [arch=arm64] http://azure.ports.ubuntu.com/ focal-backports main multiverse universe
         deb [arch=arm64] http://azure.ports.ubuntu.com/ focal-updates main multiverse universe" | sudo tee -a /etc/apt/sources.list > /dev/null
         sudo dpkg --add-architecture arm64
-        sudo apt-get update
+        sudo apt-get update || true
         sudo apt-get install -y g++-aarch64-linux-gnu libc6-dev-arm64-cross
     - name: rust-toolchain
       uses: actions-rs/toolchain@v1.0.6
