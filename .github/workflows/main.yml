@@ -62,7 +62,6 @@ jobs:
         args: --target "${{ matrix.arch }}-${{ matrix.triple }}" --release
         use-cross: true
         working-directory: native
-    - run: cd ..
     - name: Rename to arch type
       shell: bash #prepare for bashing syntaxing
       run: |
