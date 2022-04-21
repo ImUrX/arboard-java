@@ -1,11 +1,15 @@
 package io.github.imurx.arboard;
 import java.io.IOException;
 import java.lang.ref.Cleaner;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import com.nativeutils.NativeUtils;
 
 public class Clipboard implements AutoCloseable {
     protected static final Cleaner cleaner = Cleaner.create();
+    private static final Map<String, String> ARCHS;
 
     private static native long clipboardNew();
     private static native String clipboardGetText(long clipboard_ptr);
@@ -15,10 +19,20 @@ public class Clipboard implements AutoCloseable {
     private static native void clipboardDrop(long clipboard_ptr);
 
     static {
+        ARCHS = new HashMap<>();
+        ARCHS.put("aarch64", "aarch64");
+        ARCHS.put("amd64", "x86_64");
+        ARCHS.put("x86_64", "x86_64");
+
         try {
-            NativeUtils.loadLibraryFromJar("/natives/" + System.mapLibraryName("arboard_java"));
+            NativeUtils.loadLibraryFromJar("/natives/" + ARCHS.get(System.getProperty("os.arch").toLowerCase()) + System.mapLibraryName("arboard_java"));
         } catch (IOException e1) {
-            throw new RuntimeException(e1);
+            e1.printStackTrace();
+            try {
+                NativeUtils.loadLibraryFromJar("/natives/" + System.mapLibraryName("arboard_java"));
+            } catch(IOException e2) {
+                throw new RuntimeException(e1);
+            }
         }
     }
 
@@ -27,9 +41,8 @@ public class Clipboard implements AutoCloseable {
 
     public Clipboard() {
         this.ptr = clipboardNew();
-        cleanable = cleaner.register(this, () -> {
-            clipboardDrop(this.ptr);
-        });
+        long ptr = this.ptr;
+        cleanable = cleaner.register(this, () -> clipboardDrop(ptr));
     }
 
     public String getText() {
