@@ -32,7 +32,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3.0.0
     - name: install packages for arm
-      if: matrix.os == 'ubuntu-latest' && matrix.arch == "aarch64"
+      if: matrix.os == 'ubuntu-latest' && matrix.arch == 'aarch64'
       run: |
         dpkg --add-architecture arm64
         apt update
