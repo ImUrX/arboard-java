@@ -18,9 +18,6 @@ jobs:
   build:
 
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: native
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -42,6 +39,8 @@ jobs:
         override: true
     - name: Rust Cache
       uses: Swatinem/rust-cache@v1.3.0
+      with:
+        working-directory: "./native/"
     - name: Set up JDK 11
       uses: actions/setup-java@v3.1.0
       with:
@@ -49,34 +48,31 @@ jobs:
         distribution: 'temurin'
     - name: Test with Gradle
       uses: gradle/gradle-build-action@v2.1.5
-      with:
-        build-root-directory: ../
-        gradle-executable: ../
     - name: Run gradle test with XVFB
       if: matrix.os == 'ubuntu-latest'
-      run: cd .. && xvfb-run --auto-servernum gradle test --info
+      run: xvfb-run --auto-servernum gradle test --info
     - name: Run gradle test
       if: matrix.os != 'ubuntu-latest'
-      run: cd .. && gradle test --info
+      run: gradle test --info
     - name: Build lib
-      uses: actions-rs/cargo@v1.0.1
+      uses: marcopolo/cargo@master
       with:
         # Cargo command to run (ex. `check` or `build`)
         command: build
         args: --target "${{ matrix.arch }}-${{ matrix.triple }}" --release
         use-cross: true
+        working-directory: native
     - run: cd ..
     - name: Rename to arch type
       shell: bash #prepare for bashing syntaxing
       run: |
-        cd "target/${{ matrix.arch }}-${{ matrix.triple }}/release"
+        cd "native/target/${{ matrix.arch }}-${{ matrix.triple }}/release"
         for f in *arboard_java.*; do mv "$f" "${{ matrix.arch }}_$f"; done
-        cd ../../../
     - name: Upload library
       uses: actions/upload-artifact@v3.0.0
       with:
         name: "${{ matrix.arch }}-${{ matrix.triple }}"
-        path: "./target/${{ matrix.arch }}-${{ matrix.triple }}/release"
+        path: "./native/target/${{ matrix.arch }}-${{ matrix.triple }}/release"
 
   jar:
     
