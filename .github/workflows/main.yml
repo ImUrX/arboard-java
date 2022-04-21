@@ -34,10 +34,10 @@ jobs:
     - name: install packages for arm
       if: matrix.os == 'ubuntu-latest' && matrix.arch == 'aarch64'
       run: |
-        echo "deb [arch=arm64] http://ports.ubuntu.com/ focal main multiverse universe
-        deb [arch=arm64] http://ports.ubuntu.com/ focal-security main multiverse universe
-        deb [arch=arm64] http://ports.ubuntu.com/ focal-backports main multiverse universe
-        deb [arch=arm64] http://ports.ubuntu.com/ focal-updates main multiverse universe" | sudo tee -a greetings.txt > /dev/null
+        echo "deb [arch=arm64] http://azure.ports.ubuntu.com/ focal main multiverse universe
+        deb [arch=arm64] http://azure.ports.ubuntu.com/ focal-security main multiverse universe
+        deb [arch=arm64] http://azure.ports.ubuntu.com/ focal-backports main multiverse universe
+        deb [arch=arm64] http://azure.ports.ubuntu.com/ focal-updates main multiverse universe" | sudo tee -a /etc/apt/sources.list > /dev/null
         sudo dpkg --add-architecture arm64
         sudo apt-get update
         sudo apt-get install -y g++-aarch64-linux-gnu libc6-dev-arm64-cross
