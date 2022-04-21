@@ -34,9 +34,9 @@ jobs:
     - name: install packages for arm
       if: matrix.os == 'ubuntu-latest' && matrix.arch == 'aarch64'
       run: |
-        dpkg --add-architecture arm64
-        apt update
-        apt install -y g++-aarch64-linux-gnu libc6-dev-arm64-cross
+        sudo dpkg --add-architecture arm64
+        sudo apt update
+        sudo apt install -y g++-aarch64-linux-gnu libc6-dev-arm64-cross
     - name: rust-toolchain
       uses: actions-rs/toolchain@v1.0.6
       with:
