@@ -66,6 +66,7 @@ jobs:
       shell: bash #prepare for bashing syntaxing
       run: |
         cd "native/target/${{ matrix.arch }}-${{ matrix.triple }}/release"
+        ls
         for f in *arboard_java.*; do mv -f "$f" "${{ matrix.arch }}_$f"; done
     - name: Upload library
       uses: actions/upload-artifact@v3.0.0
