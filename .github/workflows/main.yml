@@ -64,7 +64,7 @@ jobs:
     - name: Rename to arch type
       shell: bash #prepare for bashing syntaxing
       run: |
-        cd native/target/release/build
+        cd "native/target/${{ matrix.arch }}-${{ matrix.triple }}/release"
         ls
         for f in *arboard_java.*; do mv "$f" "${{ matrix.arch }}_$f"; done
         cd ../../../
@@ -72,7 +72,7 @@ jobs:
       uses: actions/upload-artifact@v3.0.0
       with:
         name: "${{ matrix.arch }}-${{ matrix.triple }}"
-        path: "./native/target/release/${{ matrix.arch }}*"
+        path: "./native/target/${{ matrix.arch }}-${{ matrix.triple }}/release"
 
   jar:
     
