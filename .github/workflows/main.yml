@@ -54,6 +54,7 @@ jobs:
     - name: Run gradle test
       if: matrix.os != 'ubuntu-latest'
       run: gradle test --info
+    - run: cargo clean
     - name: Build lib
       uses: marcopolo/cargo@master
       with:
