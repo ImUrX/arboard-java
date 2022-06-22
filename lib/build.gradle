@@ -31,7 +31,7 @@ javadoc {
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.imurx'
-    PUBLISH_VERSION = '1.1.0'
+    PUBLISH_VERSION = '1.1.1'
     PUBLISH_ARTIFACT_ID = 'arboard'
 }
 
