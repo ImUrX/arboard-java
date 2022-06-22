@@ -106,7 +106,7 @@ jobs:
         shopt -s extglob
         find . -type f -mindepth 2 -maxdepth 3 -exec mv -i -n -- {} . \;
         find . -depth -maxdepth 1 -type d -exec rm -r {} \;
-        rm -rf !(*_?(lib)arboard_java.*)
+        rm -rf !(*_?(lib)arboard_java.*) *.pdb *.lib *.exp *.d
         ls ./
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2.1.5

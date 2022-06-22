@@ -1,5 +1,5 @@
 use arboard::ImageData;
-use jni::objects::{JClass};
+use jni::objects::JClass;
 use jni::sys::{jbyteArray, jint, jlong};
 use jni::JNIEnv;
 use std::{borrow::Cow, panic};
@@ -28,7 +28,8 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataGe
     image_ptr: jlong,
 ) -> jbyteArray {
     let image = &mut *(image_ptr as *mut ImageData);
-    env.byte_array_from_slice(&image.bytes).expect("Couldn't make ByteArray")
+    env.byte_array_from_slice(&image.bytes)
+        .expect("Couldn't make ByteArray")
 }
 
 #[no_mangle]

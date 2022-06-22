@@ -14,3 +14,6 @@ arboard = { version = "2.1.1", features = ["wayland-data-control"] }
 
 [lib]
 crate_type = ["cdylib"]
+
+[profile.release]
+lto = true
