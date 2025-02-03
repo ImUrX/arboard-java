@@ -47,7 +47,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: Test with Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
     - name: Run gradle test with XVFB
       if: matrix.os == 'ubuntu-latest'
       run: xvfb-run --auto-servernum gradle test --info
@@ -109,7 +109,7 @@ jobs:
         rm -rf !(*_?(lib)arboard_java.*) *.pdb *.lib *.exp *.d
         ls ./
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         arguments: jar --info
     - run: gradle sourceJar
