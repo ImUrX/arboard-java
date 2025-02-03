@@ -110,8 +110,7 @@ jobs:
         ls ./
     - name: Build with Gradle
       uses: gradle/actions/setup-gradle@v4
-      with:
-        arguments: jar --info
+    - run: gradle jar --info
     - run: gradle sourceJar
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
