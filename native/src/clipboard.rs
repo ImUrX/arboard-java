@@ -22,19 +22,19 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardGe
     let clipboard = &mut *(clipboard_ptr as *mut Clipboard);
     env.new_string(clipboard.get_text().unwrap())
         .expect("Java string couldn't be made")
-        .into_inner()
+        .as_raw()
 }
 
 #[no_mangle]
 pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardSetText(
-    env: JNIEnv,
+    mut env: JNIEnv,
     _class: JClass,
     clipboard_ptr: jlong,
     input: JString,
 ) {
     let clipboard = &mut *(clipboard_ptr as *mut Clipboard);
     let input: String = env
-        .get_string(input)
+        .get_string(&input)
         .expect("Couldn't get Java string")
         .into();
     clipboard.set_text(input).unwrap()
@@ -70,7 +70,7 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_Clipboard_clipboardDr
     clipboard_ptr: jlong,
 ) {
     panic::catch_unwind(|| {
-        Box::from_raw(clipboard_ptr as *mut Clipboard);
+        let _ = Box::from_raw(clipboard_ptr as *mut Clipboard);
     })
     .unwrap()
 }

@@ -1,5 +1,5 @@
 use arboard::ImageData;
-use jni::objects::JClass;
+use jni::objects::{JByteArray, JClass};
 use jni::sys::{jbyteArray, jint, jlong};
 use jni::JNIEnv;
 use std::{borrow::Cow, panic};
@@ -10,7 +10,7 @@ pub extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataNew(
     _class: JClass,
     width: jint,
     height: jint,
-    image: jbyteArray,
+    image: JByteArray,
 ) -> jlong {
     let image = env.convert_byte_array(image).unwrap();
     let image_data = ImageData {
@@ -30,6 +30,7 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataGe
     let image = &mut *(image_ptr as *mut ImageData);
     env.byte_array_from_slice(&image.bytes)
         .expect("Couldn't make ByteArray")
+        .as_raw()
 }
 
 #[no_mangle]
@@ -39,7 +40,7 @@ pub unsafe extern "system" fn Java_io_github_imurx_arboard_ImageData_imageDataDr
     image_ptr: jlong,
 ) {
     panic::catch_unwind(|| {
-        Box::from_raw(image_ptr as *mut ImageData);
+        let _ = Box::from_raw(image_ptr as *mut ImageData);
     })
     .unwrap()
 }

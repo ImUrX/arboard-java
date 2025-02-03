@@ -17,7 +17,7 @@ public class ImageData implements AutoCloseable {
     protected ImageData(long ptr) {
         this.ptr = ptr;
         cleanable = Clipboard.cleaner.register(this, () -> {
-            imageDataDrop(this.ptr);
+            imageDataDrop(ptr);
         });
     }
 

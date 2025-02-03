@@ -9,4 +9,6 @@ build
 lib/bin
 
 local.properties
-lib/src/main/resources/natives/
+
+# Nix stuff
+.direnv/
