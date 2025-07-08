@@ -47,8 +47,8 @@ afterEvaluate {
                     developers {
                         developer {
                             id = 'ImUrX'
-                            name = 'Uriel Fontan'
-                            email = 'urielfontan2002@gmail.com'
+                            name = 'ImUrX'
+                            email = 'imurx@proton.me'
                         }
                     }
                     scm {
