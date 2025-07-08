@@ -10,7 +10,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 jni = "0.21.1"
-arboard = { version = "3.4.1", features = ["wayland-data-control"] }
+arboard = { version = "3.6.0", features = ["wayland-data-control"] }
 
 [lib]
 crate-type = ["cdylib"]
